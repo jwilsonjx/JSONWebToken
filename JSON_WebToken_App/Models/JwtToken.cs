@@ -16,8 +16,9 @@ namespace JSON_WebToken_App.Models
             this._jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public string GenerateJwtToken(IReadOnlyDictionary<string, string> payloadContents)
+        public string GenerateJwtToken(string userName)
         {
+            Dictionary<string, string> payloadContents = GeneratePayload(userName);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(VirtualDatabase.QueryPrivateKey()));
             var signingCredentials = new SigningCredentials(securityKey, "HS256");
             var payloadClaims = payloadContents.Select(c => new Claim(c.Key, c.Value));
@@ -45,5 +46,25 @@ namespace JSON_WebToken_App.Models
 
             return this._jwtSecurityTokenHandler.WriteToken(securityToken);
         }
+
+        public Dictionary<string, string> GeneratePayload(string userName)
+        {
+            Dictionary<string, string> returnPayload = new Dictionary<string, string>();
+
+            List<User> UserRights = VirtualDatabase.QueryUserRights();
+
+            foreach (User user in UserRights)
+            {
+                if(user.UserName == userName.ToLower())
+                {
+                    returnPayload.Add("sub", user.Email);
+                    returnPayload.Add("name", user.UserName);
+                    returnPayload.Add("role", user.Role);
+                }
+            }
+
+            return returnPayload;
+        }
+
     }
 }

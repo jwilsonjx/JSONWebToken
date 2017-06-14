@@ -1,6 +1,7 @@
 ﻿using JSON_WebToken_App.Filters;
 using JSON_WebToken_App.Models;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Http;
 
 
@@ -14,14 +15,8 @@ namespace JSON_WebToken_App.Controllers
             JwtToken tokenManager = new JwtToken();
             string token = string.Empty;
 
-            Dictionary<string, string> payloadContents = new Dictionary<string, string>();
-
-            payloadContents.Add("sub", "jwilsonjx@outlook.com"); 
-            payloadContents.Add("name", "Jason Wilson");
-            payloadContents.Add("role", "user");
-
-            token = tokenManager.GenerateJwtToken(payloadContents);
-
+            string user = HttpContext.Current.Request.LogonUserIdentity.Name;
+            token = tokenManager.GenerateJwtToken(user);
 
             return token;
         }
