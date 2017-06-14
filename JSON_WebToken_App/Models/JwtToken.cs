@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -55,15 +56,24 @@ namespace JSON_WebToken_App.Models
 
             foreach (User user in UserRights)
             {
-                if(user.UserName == userName.ToLower())
-                {
+                if (user.UserName == userName.ToLower())
+                {                   
                     returnPayload.Add("sub", user.Email);
                     returnPayload.Add("name", user.UserName);
                     returnPayload.Add("role", user.Role);
+                    returnPayload.Add("iat", ConvertToUnixTime(DateTime.Now).ToString());
+                    returnPayload.Add("exp", ConvertToUnixTime(DateTime.Now.AddMinutes(30)).ToString());
                 }
             }
 
             return returnPayload;
+        }
+
+        public static long ConvertToUnixTime(DateTime datetime)
+        {
+            DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            return (long)(datetime - sTime).TotalSeconds;
         }
 
     }

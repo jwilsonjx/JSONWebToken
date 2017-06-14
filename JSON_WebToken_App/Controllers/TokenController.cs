@@ -12,11 +12,10 @@ namespace JSON_WebToken_App.Controllers
         [BasicAuthentication]
         public string Get()
         {
-            JwtToken tokenManager = new JwtToken();
-            string token = string.Empty;
-
             string user = HttpContext.Current.Request.LogonUserIdentity.Name;
-            token = tokenManager.GenerateJwtToken(user);
+
+            JwtToken tokenManager = new JwtToken();            
+            string token = tokenManager.GenerateJwtToken(user);
 
             return token;
         }

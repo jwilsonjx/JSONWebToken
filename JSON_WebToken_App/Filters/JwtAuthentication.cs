@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using log4net;
+using System.Linq;
 
 namespace JSON_WebToken_App.Filters
 {
@@ -54,7 +55,15 @@ namespace JSON_WebToken_App.Filters
 
                 if (token.RawData == compareToken.RawData)
                 {
-                    validated = true;
+                    //Verify expiration time
+                    var tempExpiration = token.Claims.First(claim => claim.Type == "exp").Value;
+                    long exp = Convert.ToInt64(tempExpiration);
+                    var now = JwtToken.ConvertToUnixTime(DateTime.Now);
+
+                    if(exp > now)
+                    {
+                        validated = true;
+                    }                    
                 }
                 else
                 {
