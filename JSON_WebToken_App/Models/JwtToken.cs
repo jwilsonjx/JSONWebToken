@@ -18,22 +18,21 @@ namespace JSON_WebToken_App.Models
         }
 
         public string GenerateJwtToken(string userName)
-        {
+        { 
             Dictionary<string, string> payloadContents = GeneratePayload(userName);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(VirtualDatabase.QueryPrivateKey()));
             var signingCredentials = new SigningCredentials(securityKey, "HS256");
             var payloadClaims = payloadContents.Select(c => new Claim(c.Key, c.Value));
             var payload = new JwtPayload(payloadClaims);
-            var header = new JwtHeader(signingCredentials);
-            var securityToken = new JwtSecurityToken(header, payload);          
+            var header = new JwtHeader(signingCredentials);         
+            var securityToken = new JwtSecurityToken(header, payload);              
 
             return this._jwtSecurityTokenHandler.WriteToken(securityToken);
         }
 
         public string GenerateJwtCompareToken(string jsonWebtoken)
         {
-            string returnKey = string.Empty;
-    
+            string returnKey = string.Empty;    
             
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             JwtSecurityToken token = handler.ReadJwtToken(jsonWebtoken);
