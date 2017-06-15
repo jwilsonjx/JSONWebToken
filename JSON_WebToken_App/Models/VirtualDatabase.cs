@@ -4,8 +4,8 @@ namespace JSON_WebToken_App.Models
 {
     /// <summary>
     /// This is being used as a "virtual" database
-    /// for demonstration purposes. These methods represent database calls
-    /// that would be made.
+    /// for demonstration purposes. These methods represent the database calls
+    /// that would normally be made.
     /// </summary>
     public class VirtualDatabase
     {

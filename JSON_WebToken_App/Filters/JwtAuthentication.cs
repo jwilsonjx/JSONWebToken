@@ -53,6 +53,7 @@ namespace JSON_WebToken_App.Filters
                 token = handler.ReadJwtToken(jsonWebToken);
                 compareToken = handler.ReadJwtToken(compareTokenString);
 
+                // Signatures match
                 if (token.RawData == compareToken.RawData)
                 {
                     //Verify expiration time
