@@ -8,12 +8,14 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using log4net;
 using System.Linq;
+using System.Web;
 
 namespace JSON_WebToken_App.Filters
 {
     public class JwtAuthentication : AuthorizationFilterAttribute
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);        
+
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             try
@@ -31,7 +33,7 @@ namespace JSON_WebToken_App.Filters
                 log.Error(ex.Message);
 
                 // return unauthorized error 
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             base.OnAuthorization(actionContext);
@@ -41,17 +43,18 @@ namespace JSON_WebToken_App.Filters
         {
             bool validated = false;
 
+            //Sanitize user input
+            jsonWebToken = InputSanitizer.SanitizeInput(jsonWebToken);
+
             try
             {
-                JwtSecurityToken token, compareToken;               
-                JwtToken jwtToken = new JwtToken();
-
-                string compareTokenString = string.Empty;
-                compareTokenString = jwtToken.GenerateJwtCompareToken(jsonWebToken);
-
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                token = handler.ReadJwtToken(jsonWebToken);
-                compareToken = handler.ReadJwtToken(compareTokenString);
+                JwtToken jwtToken = new JwtToken();           
+
+                string compareTokenString = jwtToken.GenerateJwtCompareToken(jsonWebToken);
+
+                JwtSecurityToken token = handler.ReadJwtToken(jsonWebToken);
+                JwtSecurityToken compareToken = handler.ReadJwtToken(compareTokenString);
 
                 // Signatures match
                 if (token.RawData == compareToken.RawData)
@@ -68,7 +71,7 @@ namespace JSON_WebToken_App.Filters
                 }
                 else
                 {
-                    log.Warn("Invalid Token Attempted:" + jsonWebToken);
+                    log.Warn("Invalid Token:" + jsonWebToken);
                 }
             }
             catch (Exception ex)

@@ -51,7 +51,7 @@ namespace JSON_WebToken_App.Models
         {
             Dictionary<string, string> returnPayload = new Dictionary<string, string>();
 
-            List<User> UserRights = VirtualDatabase.QueryUserRights();
+            List<User> UserRights = VirtualDatabase.QueryUserInfo();
 
             foreach (User user in UserRights)
             {

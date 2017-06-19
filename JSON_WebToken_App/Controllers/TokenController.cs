@@ -12,10 +12,8 @@ namespace JSON_WebToken_App.Controllers
         [BasicAuthentication]
         public string Get()
         {
-            string user = HttpContext.Current.Request.LogonUserIdentity.Name;
-
             JwtToken tokenManager = new JwtToken();            
-            string token = tokenManager.GenerateJwtToken(user);
+            string token = tokenManager.GenerateJwtToken(HttpContext.Current.Request.LogonUserIdentity.Name);
 
             return token;
         }

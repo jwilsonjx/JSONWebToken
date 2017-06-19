@@ -32,7 +32,8 @@ namespace JSON_WebToken_App.Filters
                 if (!ApiSecurity.VaidateUser(username, password))
                 {
                     log.Warn("Invalid Login Attempt:" + username);
-                    // returns unauthorized error  
+
+                    // return unauthorized error  
                     actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }   
             }

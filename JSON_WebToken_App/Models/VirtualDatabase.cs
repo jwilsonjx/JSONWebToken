@@ -19,7 +19,7 @@ namespace JSON_WebToken_App.Models
             return returnDictionary;
         }   
         
-        public static List<User> QueryUserRights()
+        public static List<User> QueryUserInfo()
         {
             List<User> returnUserList = new List<User>();
 

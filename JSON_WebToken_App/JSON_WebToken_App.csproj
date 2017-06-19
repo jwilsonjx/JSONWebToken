@@ -197,6 +197,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiSecurity.cs" />
+    <Compile Include="Models\InputSanitizer.cs" />
     <Compile Include="Models\JwtToken.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\VirtualDatabase.cs" />
