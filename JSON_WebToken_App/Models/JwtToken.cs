@@ -21,7 +21,7 @@ namespace JSON_WebToken_App.Models
         { 
             Dictionary<string, string> payloadContents = GeneratePayload(userName);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(VirtualDatabase.QueryPrivateKey()));
-            var signingCredentials = new SigningCredentials(securityKey, "HS256");
+            var signingCredentials = new SigningCredentials(securityKey, "HS256"); //HMAC-SHA256 - Could also be done asymmetric with RS256
             var payloadClaims = payloadContents.Select(c => new Claim(c.Key, c.Value));
             var payload = new JwtPayload(payloadClaims);
             var header = new JwtHeader(signingCredentials);         
@@ -39,7 +39,7 @@ namespace JSON_WebToken_App.Models
             JwtPayload payload = new JwtPayload();
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(VirtualDatabase.QueryPrivateKey()));
-            var signingCredentials = new SigningCredentials(securityKey, "HS256"); //Could also be done asymmetric with RS256
+            var signingCredentials = new SigningCredentials(securityKey, "HS256"); //HMAC-SHA256 - Could also be done asymmetric with RS256
             payload = token.Payload;
             var header = new JwtHeader(signingCredentials);
             var securityToken = new JwtSecurityToken(header, payload);
