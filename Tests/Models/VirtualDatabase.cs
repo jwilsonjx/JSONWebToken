@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace JSON_WebToken_App.Models
+namespace Tests.Models
 {
     /// <summary>
     /// This is being used as a "virtual" database
